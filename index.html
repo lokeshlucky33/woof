@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dog Skin Disease Detection</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+      integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      position: relative;
+      height: 100svh;
+      background-color: #3aafa9;
+    }
+    ul {
+      list-style-type: none;
+    }
+
+    /* body i{
+    position: absolute;
+    font-size: 50px;
+    /* opacity: 0%; */
+    /* top:0;
+    left:0; }*/
+
+    /* body {
+  width: 100%;
+  height: 100%;
+  --color1: rgb(108, 231, 221);
+  --color2: rgb(250, 255, 178);
+  background-color: var(--color1);
+  background-image: linear-gradient(45deg, var(--color2) 25%, transparent 25%, transparent 75%, var(--color2) 75%, var(--color2)), 
+                    linear-gradient(45deg, var(--color2) 25%, var(--color1) 25%, var(--color1) 75%, var(--color2) 75%, var(--color2));
+  background-size: 60px 60px;
+  background-position: 0 0, 30px 30px;
+} */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    input[type="file"] {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      width: 300px;
+      max-width: 100%;
+    }
+
+    button[type="submit"] {
+      background-color: #17252a;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      width: 300px;
+      max-width: 100%;
+    }
+
+    button[type="submit"]:hover {
+      box-shadow: 0px 0px 0px 3px white;
+
+      background-color: #17252a;
+      /* color: ; */
+    }
+
+    .results {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f5f5f5;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .results h2 {
+      margin-bottom: 10px;
+    }
+
+    .results ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .results li {
+      margin-bottom: 5px;
+      padding: 10px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .img1 {
+      /* margin-top: 20px; */
+      /* border: 1px solid black; */
+      margin-left: 3%;
+      height: 300px;
+      width: 90%;
+      overflow: hidden;
+      border-radius: 20px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      position: sticky;
+    }
+
+    .img1 img {
+      /* position: fixed; */
+      height: 190px;
+      width: 190px;
+      border-radius: 100%;
+      margin-top: 2%;
+    }
+
+    @keyframes foot {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 100;
+      }
+    }
+    /* @keyframes foot {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+} */
+
+    i {
+      position: absolute;
+      font-size: 36px;
+      /* opacity: 100; */
+      opacity: 0;
+      color: white;
+      z-index: -2;
+    }
+
+    #a {
+      top: 87%;
+      left: 4%;
+      position: absolute;
+      transform: rotate(50deg);
+      animation: foot 10s ease 2s;
+      animation-fill-mode: forwards;
+    }
+
+    #b {
+      top: 93%;
+      left: 4%;
+      position: absolute;
+      transform: rotate(45deg);
+      animation: foot 10s ease 1s;
+      animation-fill-mode: forwards;
+    }
+
+    #c {
+      top: 79%;
+      left: 8%;
+      position: absolute;
+      transform: rotate(50deg);
+      animation: foot 10s ease 4s;
+      animation-fill-mode: forwards;
+    }
+
+    #d {
+      top: 86%;
+      left: 8%;
+      position: absolute;
+      transform: rotate(49deg);
+      animation: foot 10s ease 3s;
+      animation-fill-mode: forwards;
+    }
+
+    #e {
+      top: 78%;
+      left: 12%;
+      position: absolute;
+      transform: rotate(45deg);
+      animation: foot 10s ease 6s;
+      animation-fill-mode: forwards;
+    }
+
+    #f {
+      top: 70%;
+      left: 11%;
+      position: absolute;
+      transform: rotate(45deg);
+      animation: foot 10s ease 5s;
+      animation-fill-mode: forwards;
+    }
+
+    #g {
+      top: 61%;
+      left: 15%;
+      position: absolute;
+      transform: rotate(49deg);
+      animation: foot 10s ease 8s;
+      animation-fill-mode: forwards;
+    }
+
+    #h {
+      top: 70%;
+      left: 15%;
+      position: absolute;
+      transform: rotate(49deg);
+      animation: foot 10s ease 7s;
+      animation-fill-mode: forwards;
+    }
+    #h1 {
+      top: 63%;
+      left: 19%;
+      position: absolute;
+      transform: rotate(55deg);
+      animation: foot 10s ease 9s;
+      animation-fill-mode: forwards;
+    }
+
+    #i {
+      top: 56%;
+      left: 19%;
+      position: absolute;
+      transform: rotate(60deg);
+      animation: foot 10s ease 10s;
+      animation-fill-mode: forwards;
+    }
+    #i1 {
+      top: 59%;
+      left: 23%;
+      position: absolute;
+      transform: rotate(69deg);
+      animation: foot 10s ease 11s;
+      animation-fill-mode: forwards;
+    }
+
+    #j {
+      top: 52%;
+      left: 24%;
+      position: absolute;
+      transform: rotate(70deg);
+      animation: foot 10s ease 12s;
+      animation-fill-mode: forwards;
+    }
+
+    #k {
+      top: 57%;
+      left: 28%;
+      position: absolute;
+      transform: rotate(76deg);
+      animation: foot 10s ease 13s;
+      animation-fill-mode: forwards;
+    }
+    #k1 {
+      top: 51%;
+      left: 30%;
+      position: absolute;
+      transform: rotate(79deg);
+      animation: foot 10s ease 14s;
+      animation-fill-mode: forwards;
+    }
+
+    #l {
+      top: 57%;
+      left: 33%;
+      position: absolute;
+      transform: rotate(88deg);
+      animation: foot 10s ease 15s;
+      animation-fill-mode: forwards;
+    }
+    #l1 {
+      top: 51%;
+      left: 36%;
+      position: absolute;
+      transform: rotate(96deg);
+      animation: foot 10s ease 15.5s;
+      animation-fill-mode: forwards;
+    }
+
+    #m {
+      top: 58%;
+      left: 38%;
+      position: absolute;
+      transform: rotate(102deg);
+      animation: foot 10s ease 16.2s;
+      animation-fill-mode: forwards;
+    }
+    #m1 {
+      top: 53%;
+      left: 41%;
+      position: absolute;
+      transform: rotate(109deg);
+      animation: foot 10s ease 17s;
+      animation-fill-mode: forwards;
+    }
+
+    #n {
+      top: 62%;
+      left: 42%;
+      position: absolute;
+      transform: rotate(115deg);
+      animation: foot 10s ease 18s;
+      animation-fill-mode: forwards;
+    }
+
+    #n1 {
+      top: 59%;
+      left: 45%;
+      position: absolute;
+      transform: rotate(126deg);
+      animation: foot 10s ease 19s;
+      animation-fill-mode: forwards;
+    }
+
+    #o {
+      top: 67%;
+      left: 45%;
+      position: absolute;
+      transform: rotate(128deg);
+      animation: foot 10s ease 20s;
+      animation-fill-mode: forwards;
+    }
+    #o1 {
+      top: 64%;
+      left: 49%;
+      position: absolute;
+      transform: rotate(103deg);
+      animation: foot 10s ease 21s;
+      animation-fill-mode: forwards;
+    }
+    #p {
+      top: 70%;
+      left: 51%;
+      position: absolute;
+      transform: rotate(100deg);
+      animation: foot 10s ease 22s;
+      animation-fill-mode: forwards;
+    }
+    #p1 {
+      top: 65%;
+      left: 54%;
+      position: absolute;
+      transform: rotate(90deg);
+      animation: foot 10s ease 23s;
+      animation-fill-mode: forwards;
+    }
+    #q {
+      top: 61%;
+      left: 60%;
+      position: absolute;
+      transform: rotate(80deg);
+      animation: foot 10s ease 25s;
+      animation-fill-mode: forwards;
+    }
+    #q1 {
+      top: 69%;
+      left: 67%;
+      position: absolute;
+      transform: rotate(45deg);
+      animation: foot 10s ease 26s;
+      animation-fill-mode: forwards;
+    }
+    #r {
+      top: 60%;
+      left: 67.5%;
+      position: absolute;
+      transform: rotate(55deg);
+      animation: foot 10s ease 27s;
+      animation-fill-mode: forwards;
+    }
+    #r1 {
+      top: 63%;
+      left: 72%;
+      position: absolute;
+      transform: rotate(45deg);
+      animation: foot 10s ease 28s;
+      animation-fill-mode: forwards;
+    }
+    #s {
+      top: 54%;
+      left: 70.6%;
+      position: absolute;
+      transform: rotate(40deg);
+      animation: foot 10s ease 29s;
+      animation-fill-mode: forwards;
+    }
+
+    #s1 {
+      top: 54%;
+      left: 75%;
+      position: absolute;
+      transform: rotate(25deg);
+      animation: foot 10s ease 30s;
+      animation-fill-mode: forwards;
+    }
+
+    #t {
+      top: 46%;
+      left: 73%;
+      position: absolute;
+      transform: rotate(5deg);
+      animation: foot 10s ease 31s;
+      animation-fill-mode: forwards;
+    }
+
+    #t1 {
+      top: 41.5%;
+      left: 76.5%;
+      position: absolute;
+      transform: rotate(-5deg);
+      animation: foot 10s ease 32s;
+      animation-fill-mode: forwards;
+    }
+
+    #u {
+      top: 35%;
+      left: 73.5%;
+      position: absolute;
+      transform: rotate(0deg);
+      animation: foot 10s ease 33s;
+      animation-fill-mode: forwards;
+    }
+
+    #u1 {
+      top: 32%;
+      left: 77%;
+      position: absolute;
+      transform: rotate(0deg);
+      animation: foot 10s ease 34s;
+      animation-fill-mode: forwards;
+    }
+
+    #v {
+      top: 25.6%;
+      left: 74%;
+      position: absolute;
+      transform: rotate(25deg);
+      animation: foot 10s ease 35s;
+      animation-fill-mode: forwards;
+    }
+
+    #v1 {
+      top: 24.5%;
+      left: 78%;
+      position: absolute;
+      transform: rotate(40deg);
+      animation: foot 10s ease 36s;
+      animation-fill-mode: forwards;
+    }
+
+    #w {
+      top: 17.1%;
+      left: 77%;
+      position: absolute;
+      transform: rotate(45deg);
+      animation: foot 10s ease 37s;
+      animation-fill-mode: forwards;
+    }
+    #w1 {
+      top: 19%;
+      left: 81%;
+      position: absolute;
+      transform: rotate(50deg);
+      animation: foot 10s ease 38s;
+      animation-fill-mode: forwards;
+    }
+    #x {
+      top: 11%;
+      left: 80%;
+      position: absolute;
+      transform: rotate(60deg);
+      animation: foot 10s ease 39s;
+      animation-fill-mode: forwards;
+    }
+
+    #x1 {
+      top: 13%;
+      left: 84%;
+      position: absolute;
+      transform: rotate(55deg);
+      animation: foot 10s ease 40s;
+      animation-fill-mode: forwards;
+    }
+
+    #y {
+      top: 5%;
+      left: 84%;
+      position: absolute;
+      transform: rotate(60deg);
+      animation: foot 10s ease 41s;
+      animation-fill-mode: forwards;
+    }
+
+    #y1 {
+      top: 7%;
+      left: 88%;
+      position: absolute;
+      transform: rotate(60deg);
+      animation: foot 10s ease 42s;
+      animation-fill-mode: forwards;
+    }
+
+    #z {
+      top: 0%;
+      left: 88%;
+      position: absolute;
+      transform: rotate(55deg);
+      animation: foot 10s ease 43s;
+      animation-fill-mode: forwards;
+    }
+    #z1 {
+      top: -1%;
+      left: 92%;
+      position: absolute;
+      transform: rotate(45deg);
+      animation: foot 10s ease 44s;
+      animation-fill-mode: forwards;
+    }
+    .logo {
+      /* position: absolute; */
+      height: 100%;
+      width: 100%;
+    }
+    .vorder {
+      top: 2%;
+      left: 4%;
+      border-radius: 50%;
+      position: absolute;
+      height: 100px;
+      filter: drop-shadow(0px 0px 10px white);
+      /* background-color: #041313; */
+    }
+    .bot {
+      margin-left: 30%;
+
+      height: 300px;
+      width: 500px;
+      /* border: 1px solid black; */
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  </style>
+
+  <body>
+    <div class="vorder">
+      <img
+        src="https://i.postimg.cc/5tF4j11q/IMG-20240725-WA0008-removebg-preview-1.png"
+        class="logo"
+      />
+    </div>
+    <div class="bot">
+      <h1 style="color: #def2f1">Dog Skin Disease Detection</h1>
+      <form method="POST" enctype="multipart/form-data">
+        <input
+          type="file"
+          style="box-shadow: 0px 0px 2px 3px white"
+          name="file"
+          accept=".jpg, .jpeg, .png"
+          required
+        />
+        <button type="submit">Detect Diseases</button>
+      </form>
+      <center>
+        {% if detected_labels %}
+        <div>
+          <h2>I Feel It is</h2>
+          <ul>
+            {% for label in detected_labels %}
+            <li>
+              <b>{{ label.name }}</b> with Confidence: {{ label.confidence }}%
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+      </center>
+    </div>
+
+    <div class="img1">
+      <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQCFZQq4210wdOzTh6qKX-gMaDnQAGWsVJLg&s"
+      />
+      <img
+        src="data:image/jpeg;base64,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"
+      />
+      <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdMx0YyQzfG-w841aTX4yp_zdkn1-PTwka7g&s"
+      />
+      <img
+        src="https://i.pinimg.com/736x/dd/05/a5/dd05a593386696c874b5ad74a06e62f7.jpg"
+      />
+    </div>
+    <i class="fa-solid fa-paw" id="a"></i>
+    <i class="fa-solid fa-paw" id="b"></i>
+    <i class="fa-solid fa-paw" id="c"></i>
+    <i class="fa-solid fa-paw" id="d"></i>
+    <i class="fa-solid fa-paw" id="e"></i>
+    <i class="fa-solid fa-paw" id="f"></i>
+    <i class="fa-solid fa-paw" id="g"></i>
+    <i class="fa-solid fa-paw" id="h"></i>
+    <i class="fa-solid fa-paw" id="h1"></i>
+    <i class="fa-solid fa-paw" id="i"></i>
+    <i class="fa-solid fa-paw" id="i1"></i>
+    <i class="fa-solid fa-paw" id="j"></i>
+    <!-- <i class="fa-solid fa-paw" id="j1"></i> -->
+    <i class="fa-solid fa-paw" id="k"></i>
+    <i class="fa-solid fa-paw" id="k1"></i>
+    <i class="fa-solid fa-paw" id="l"></i>
+    <i class="fa-solid fa-paw" id="l1"></i>
+    <i class="fa-solid fa-paw" id="m"></i>
+    <i class="fa-solid fa-paw" id="m1"></i>
+    <i class="fa-solid fa-paw" id="n"></i>
+    <i class="fa-solid fa-paw" id="n1"></i>
+    <i class="fa-solid fa-paw" id="o"></i>
+    <i class="fa-solid fa-paw" id="o1"></i>
+    <i class="fa-solid fa-paw" id="p"></i>
+    <i class="fa-solid fa-paw" id="p1"></i>
+    <i class="fa-solid fa-paw" id="q"></i>
+    <i class="fa-solid fa-paw" id="q1"></i>
+    <i class="fa-solid fa-paw" id="r"></i>
+    <i class="fa-solid fa-paw" id="r1"></i>
+    <i class="fa-solid fa-paw" id="s"></i>
+    <i class="fa-solid fa-paw" id="s1"></i>
+    <i class="fa-solid fa-paw" id="t"></i>
+    <i class="fa-solid fa-paw" id="t1"></i>
+    <i class="fa-solid fa-paw" id="u"></i>
+    <i class="fa-solid fa-paw" id="u1"></i>
+    <i class="fa-solid fa-paw" id="v"></i>
+    <i class="fa-solid fa-paw" id="v1"></i>
+    <i class="fa-solid fa-paw" id="w"></i>
+    <i class="fa-solid fa-paw" id="w1"></i>
+    <i class="fa-solid fa-paw" id="x"></i>
+    <i class="fa-solid fa-paw" id="x1"></i>
+    <i class="fa-solid fa-paw" id="y"></i>
+    <i class="fa-solid fa-paw" id="y1"></i>
+    <i class="fa-solid fa-paw" id="z"></i>
+    <i class="fa-solid fa-paw" id="z1"></i>
+    <script type="text/javascript">
+      (function (d, m) {
+        var kommunicateSettings = {
+          appId: "1a77fa341f2947d3ed37a7b11ea9ee819",
+          popupWidget: true,
+          automaticChatOpenOnNavigation: true,
+        };
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+        var h = document.getElementsByTagName("head")[0];
+        h.appendChild(s);
+        window.kommunicate = m;
+        m._globals = kommunicateSettings;
+      })(document, window.kommunicate || {});
+      /* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+    </script>
+    >
+  </body>
+</html>
